@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECSR Robux GIFT</title>
+    <title>ECSR Robux Surge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -240,10 +240,9 @@
     </div>
 
     <script>
-    
-        const APIFLASH_ACCESS_KEY = '91aeaa0c407e4f089e1c49af78437242';
-        const WEBHOOK_URL = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r';
-        // -----------------------------------------------------------
+        // --- УКАЖИТЕ ПОЛНЫЙ URL ВАШЕГО PHP БЭКЕНДА НА INFINITYFREEAPP.COM ---
+        const PHP_BACKEND_URL = 'https://just-testingg.infinityfreeapp.com/webhook.php';
+        // ---------------------------------------------------------------
 
         document.getElementById('participateButton').addEventListener('click', async () => {
             const userId = document.getElementById('robloxUserId').value.trim();
@@ -260,18 +259,30 @@
             document.getElementById('message').classList.add('loading-dots');
 
             try {
-                // Прямой запрос к APIflash из фронтенда
-                const imageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${APIFLASH_ACCESS_KEY}&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
-                
-                // Проверяем доступность изображения (можно сделать HEAD запрос или просто установить src)
-                // Для простоты, здесь просто устанавливаем src. В реальном проекте, лучше проверить наличие изображения.
-                document.getElementById('profile-image').src = imageUrl;
+                // Запрос к PHP-бэкенду для получения изображения
+                const response = await fetch(`${PHP_BACKEND_URL}?action=getProfileImage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+                const data = await response.json();
 
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to fetch profile data.');
+                }
+
+                document.getElementById('profile-image').src = data.imageUrl;
+                
                 // Для надежности, можно подождать загрузки изображения
                 await new Promise((resolve, reject) => {
                     const img = document.getElementById('profile-image');
-                    img.onload = resolve;
-                    img.onerror = () => reject(new Error('Failed to load profile image.'));
+                    // Если изображение уже в кеше, onload может не сработать, поэтому проверяем complete
+                    if (img.complete) {
+                        resolve();
+                    } else {
+                        img.onload = resolve;
+                        img.onerror = () => reject(new Error('Failed to load profile image.'));
+                    }
                 });
 
                 switchStep('verificationStep');
@@ -330,9 +341,11 @@
             }
             document.getElementById('error').innerText = '';
 
-            // Без бэкенда невозможно проверить ссылку на Roblox футболку.
-            // Пользователь может ввести что угодно.
-            // Эту валидацию на фронтенде крайне сложно сделать надежной.
+            // Валидация ссылки на фронтенде (базовая, полная валидация должна быть на бэкенде)
+            if (!tshirtLink.startsWith('https://www.roblox.com/catalog/') && !tshirtLink.startsWith('https://www.roblox.com/item.aspx')) {
+                document.getElementById('error').innerText = 'Invalid Roblox T-Shirt link. Must start with roblox.com/catalog/ or roblox.com/item.aspx';
+                return;
+            }
 
             switchStep('captchaStep');
             startCaptcha();
@@ -364,46 +377,31 @@
             const userId = sessionStorage.getItem('currentUserId');
             const tshirtLink = document.getElementById('tshirtLink').value.trim();
 
-            const profileImageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${APIFLASH_ACCESS_KEY}&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
-
-            let webhookContent = `🎉 Robux Giveaway Result 🎉\n\n**User ID:** ${userId}\n**Won Robux:** ${wonRobux}\n**T-Shirt Link:** ${tshirtLink}\n**Required Price:** ${requiredPrice}\n\n**Profile Image:** ${profileImageUrl}`;
-
-            // Запрещаем @everyone и @here путем вставки невидимого символа Unicode
-            webhookContent = webhookContent
-                .replace(/@everyone/g, '@\u{200b}everyone')
-                .replace(/@here/g, '@\u{200b}here');
-
-            const webhookPayload = {
-                "content": webhookContent
+            const payload = {
+                userId: userId,
+                wonRobux: wonRobux,
+                tshirtLink: tshirtLink,
+                requiredPrice: requiredPrice
             };
 
             try {
-                // Прямой POST-запрос к вашему вебхуку из фронтенда
-                const response = await fetch(WEBHOOK_URL, {
+                // Запрос к PHP-бэкенду для отправки результатов
+                const response = await fetch(`${PHP_BACKEND_URL}?action=submitGiveawayResult`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(webhookPayload),
+                    body: JSON.stringify(payload),
                 });
-                
+                const data = await response.json();
+
                 document.getElementById('message').innerText = ''; // Очищаем сообщение о загрузке
                 document.getElementById('message').classList.remove('loading-dots');
 
-                // Проверяем, успешен ли запрос к вебхуку (статус 2xx)
-                if (response.ok) { // response.ok это true, если статус 200-299
+                if (response.ok) {
                     document.getElementById('finalMessage').innerText = 'Your claim has been submitted successfully! Please wait for your Robux.';
                     document.getElementById('errorMessage').innerText = '';
                 } else {
-                    // Если вебхук вернул ошибку или недопустимый статус
-                    let errorDetails = `Status: ${response.status} ${response.statusText}`;
-                    try {
-                        const errorJson = await response.json();
-                        errorDetails += ` - ${JSON.stringify(errorJson)}`;
-                    } catch (e) {
-                        // Если ответ не JSON
-                    }
-                    console.error('Webhook error response:', errorDetails);
                     document.getElementById('finalMessage').innerText = '';
-                    document.getElementById('errorMessage').innerText = `Failed to submit claim (${errorDetails}). Please contact @w2mpu72_ on Discord.`;
+                    document.getElementById('errorMessage').innerText = data.error || 'Failed to submit claim. Please contact @w2mpu72_ on Discord.';
                 }
                 switchStep('resultStep');
             } catch (err) {
