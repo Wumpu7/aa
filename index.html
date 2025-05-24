@@ -72,8 +72,7 @@
             document.getElementById('message').innerText = 'Fetching profile...';
 
             try {
-                // В реальной реализации, это будет вызов к вашему бэкенду, который будет генерировать изображение
-                // и возвращать его URL. Для примера, здесь мы генерируем URL напрямую.
+            
                 const imageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
 
                 document.getElementById('profile-image').src = imageUrl;
@@ -167,8 +166,6 @@
             const userId = sessionStorage.getItem('currentUserId');
             const tshirtLink = document.getElementById('tshirtLink').value;
 
-            // This is where you'd send the data to your backend, which then sends to Guilded webhook
-            // For demonstration, we'll simulate sending directly to Guilded (which is not recommended for security)
             const webhookUrl = 'https://media.guilded.gg/webhooks/3436065c-426e-44d4-bc33-0a1960d72f6/jjflvMmHoOEgkwskIsCky6wQq0MsCoMC4U2KgqGuCUKa8q8o2qSu6egEWG2A4s6gUaYaAWQYgGQgUk0sUsIYiG';
 
             const payload = {
