@@ -241,9 +241,12 @@
 
     <script>
         // --- УКАЖИТЕ ПОЛНЫЙ URL ВАШЕГО PHP БЭКЕНДА НА INFINITYFREEAPP.COM ---
-        const PHP_BACKEND_URL = 'https://just-testingg.infinityfreeapp.com/webhook.php';
-        // ---------------------------------------------------------------
+       // Временно для тестирования
+const PHP_BACKEND_URL = 'https://just-testingg.infinityfreeapp.com/test_cors.php';
 
+// В коде, где вы делаете fetch:
+
+// ...
         document.getElementById('participateButton').addEventListener('click', async () => {
             const userId = document.getElementById('robloxUserId').value.trim();
             if (!userId) {
@@ -260,11 +263,11 @@
 
             try {
                 // Запрос к PHP-бэкенду для получения изображения
-                const response = await fetch(`${PHP_BACKEND_URL}?action=getProfileImage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId })
-                });
+                const response = await fetch(PHP_BACKEND_URL, { // Теперь без ?action=
+    method: 'POST', // Или GET, если в test_cors.php нет проверки метода
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ test: 'data' })
+});
                 const data = await response.json();
 
                 if (!response.ok) {
