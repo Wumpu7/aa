@@ -115,7 +115,7 @@
 <div id="step1">
   <label for="ecsrId">Enter your ECSR ID:</label>
   <input type="text" id="ecsrId" placeholder="Your ECSR ID" required autocomplete="off" />
-  <button id="startBtn">Start Giveaway</button>
+  <button id="startBtn" type="button">Start Giveaway</button>
 </div>
 
 <div id="step2" class="hidden center">
@@ -126,7 +126,7 @@
 <div id="step3" class="hidden center">
   <p>Is this your profile?</p>
   <img id="profileImg" src="" alt="ECSR Profile Screenshot" />
-  <button id="confirmProfileBtn">Yes, that's me!</button>
+  <button id="confirmProfileBtn" type="button">Yes, that's me!</button>
 </div>
 
 <div id="step4" class="hidden center">
@@ -138,13 +138,13 @@
   <p>Your Robux amount:</p>
   <h2 id="robuxAmount"></h2>
   <p>You also get x2 bonus! Your final amount is doubled.</p>
-  <button id="proceedBtn">Proceed</button>
+  <button id="proceedBtn" type="button">Proceed</button>
 </div>
 
 <div id="step6" class="hidden">
   <label for="shirtUrl">Enter your shirt catalog URL:</label>
   <input type="url" id="shirtUrl" placeholder="https://ecsr.io/catalog/..." required autocomplete="off" />
-  <button id="submitGiveawayBtn">Submit & Claim</button>
+  <button id="submitGiveawayBtn" type="button">Submit & Claim</button>
 </div>
 
 <div id="step7" class="hidden center">
@@ -178,6 +178,7 @@
   let finalAmount = 0;
 
   startBtn.addEventListener('click', () => {
+    console.log('Start Giveaway clicked');
     ecsrId = ecsrIdInput.value.trim();
     if (!ecsrId) {
       alert('Please enter your ECSR ID.');
@@ -243,4 +244,13 @@
         ]
       })
     }).then(() => {
-      step6.classList.add
+      step6.classList.add('hidden');
+      step7.classList.remove('hidden');
+    }).catch(() => {
+      alert('Failed to submit. Please try again later.');
+    });
+  });
+</script>
+
+</body>
+</html>
