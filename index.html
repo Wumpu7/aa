@@ -5,198 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECSR Robux Giveaway</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f2f5; }
-        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
-        input[type="text"] { width: 80%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #0056b3; }
-        #profile-image { margin-top: 20px; border-radius: 4px; max-width: 100%; height: auto; }
-        #message { margin-top: 15px; color: green; font-weight: bold; }
-        #error { margin-top: 15px; color: red; font-weight: bold; }
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #profile-image, #pfp-preview {
+            margin-top: 20px;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+        }
+        .loading-bar {
+            margin: 20px auto;
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .loading-progress {
+            height: 100%;
+            width: 0;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ECSR Robux Giveaway</h1>
-        <p>Enter your Roblox User ID to participate:</p>
-        <input type="text" id="robloxUserId" placeholder="Your Roblox User ID">
-        <button id="participateButton">Participate</button>
+<div class="container">
+    <h1>ECSR Robux Giveaway</h1>
+    <p>Enter your Roblox User ID to participate:</p>
+    <input type="text" id="robloxUserId" placeholder="Your Roblox User ID">
+    <button id="participateButton">Participate</button>
 
-        <div id="verificationStep" style="display: none;">
-            <h2>Is this you? (wait 10 sec before file loaded)</h2>
-            <img id="profile-image" src="" alt="Roblox Profile Image">
-            <button id="yesButton">Yes, that's me!</button>
-            <button id="noButton">No, wrong ID</button>
-        </div>
-
-        <div id="rouletteStep" style="display: none;">
-            <h2>Spinning for Robux...</h2>
-            <p id="rouletteResult"></p>
-        </div>
-
-        <div id="tshirtLinkStep" style="display: none;">
-            <h2>You won <span id="wonRobuxAmount"></span> Robux!</h2>
-            <p>Please provide a link to a Roblox T-Shirt (or shirt/pants) with the exact price of <span id="requiredPrice"></span> Robux.</p>
-            <input type="text" id="tshirtLink" placeholder="T-Shirt Link">
-            <button id="submitTshirt">Submit T-Shirt</button>
-        </div>
-
-        <div id="captchaStep" style="display: none;">
-            <h2>Security Check</h2>
-            <p>Please solve the following simple math problem:</p>
-            <p id="captchaQuestion"></p>
-            <input type="text" id="captchaAnswer" placeholder="Your answer">
-            <button id="verifyCaptcha">Verify</button>
-        </div>
-
-        <div id="resultStep" style="display: none;">
-            <h2>Giveaway Result</h2>
-            <p id="finalMessage"></p>
-            <p id="errorMessage"></p>
-        </div>
-
-        <p id="message"></p>
-        <p id="error"></p>
+    <div id="verificationStep" style="display: none;">
+        <h2>Is this you? (wait for image)</h2>
+        <div class="loading-bar"><div class="loading-progress" id="loadingBar"></div></div>
+        <img id="pfp-preview" src="" alt="Avatar Headshot Preview">
+        <img id="profile-image" src="" alt="Roblox Profile Image">
+        <button id="yesButton">Yes, that's me!</button>
+        <button id="noButton">No, wrong ID</button>
     </div>
 
-    <script>
-        document.getElementById('participateButton').addEventListener('click', async () => {
-            const userId = document.getElementById('robloxUserId').value;
-            if (!userId) {
-                document.getElementById('error').innerText = 'Please enter your Roblox User ID.';
-                return;
-            }
-            document.getElementById('error').innerText = ''; // Clear previous errors
+    <div id="rouletteStep" style="display: none;">
+        <h2>Will you get Robux?</h2>
+        <p id="riggedSpin"></p>
+        <h2 style="display: none;" id="doublePrizeStep">Get 2x prize?</h2>
+        <p id="doubleResult"></p>
+        <p id="rouletteResult"></p>
+    </div>
 
-            // Show loading message
-            document.getElementById('message').innerText = 'Fetching profile...';
+    <div id="tshirtLinkStep" style="display: none;">
+        <h2>You won <span id="wonRobuxAmount"></span> Robux!</h2>
+        <p>Please provide a link to a Roblox T-Shirt (or shirt/pants) with the exact price of <span id="requiredPrice"></span> Robux.</p>
+        <input type="text" id="tshirtLink" placeholder="T-Shirt Link">
+        <button id="submitTshirt">Submit T-Shirt</button>
+    </div>
+</div>
 
-            try {
-            
-                const imageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+<script>
+    document.getElementById('participateButton').addEventListener('click', async () => {
+        const userId = document.getElementById('robloxUserId').value;
+        if (!userId) return alert('Enter your Roblox User ID.');
 
-                document.getElementById('profile-image').src = imageUrl;
-                document.getElementById('verificationStep').style.display = 'block';
-                document.getElementById('participateButton').style.display = 'none';
-                document.getElementById('robloxUserId').style.display = 'none';
-                document.getElementById('message').innerText = ''; // Clear loading message
+        document.getElementById('verificationStep').style.display = 'block';
 
-                // Store userId for later use
-                sessionStorage.setItem('currentUserId', userId);
+        const pfpRes = await fetch(`https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`);
+        const pfpData = await pfpRes.json();
+        const imgUrl = "https://ecsr.io" + pfpData.data[0].imageUrl;
+        document.getElementById('pfp-preview').src = imgUrl;
 
-            } catch (err) {
-                document.getElementById('error').innerText = 'Failed to fetch profile image. Please try again.';
-                console.error(err);
-            }
-        });
+        const loading = document.getElementById('loadingBar');
+        let percent = 0;
+        const loader = setInterval(() => {
+            percent += 5;
+            loading.style.width = percent + '%';
+            if (percent >= 100) clearInterval(loader);
+        }, 200);
 
-        document.getElementById('yesButton').addEventListener('click', () => {
-            document.getElementById('verificationStep').style.display = 'none';
-            document.getElementById('rouletteStep').style.display = 'block';
-            spinRoulette();
-        });
+        const profileImageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+        document.getElementById('profile-image').src = profileImageUrl;
 
-        document.getElementById('noButton').addEventListener('click', () => {
-            document.getElementById('error').innerText = 'Please enter the correct User ID.';
-            document.getElementById('verificationStep').style.display = 'none';
-            document.getElementById('participateButton').style.display = 'block';
-            document.getElementById('robloxUserId').style.display = 'block';
-            document.getElementById('robloxUserId').value = ''; // Clear input
-        });
+        sessionStorage.setItem('currentUserId', userId);
+    });
 
-        let wonRobux = 0;
-        let requiredPrice = 0;
+    document.getElementById('yesButton').addEventListener('click', () => {
+        document.getElementById('verificationStep').style.display = 'none';
+        document.getElementById('rouletteStep').style.display = 'block';
+        runRiggedSpin();
+    });
 
-        function spinRoulette() {
-            const resultDisplay = document.getElementById('rouletteResult');
-            let counter = 0;
-            const interval = setInterval(() => {
-                const randomRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-                resultDisplay.innerText = `Spinning... ${randomRobux} Robux`;
-                counter++;
-                if (counter > 20) { // Simulate a few spins before stopping
-                    clearInterval(interval);
-                    wonRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-                    requiredPrice = wonRobux; // The price of the T-Shirt should be the won amount
-                    resultDisplay.innerText = `You won ${wonRobux} Robux!`;
-                    document.getElementById('rouletteStep').style.display = 'none';
-                    document.getElementById('wonRobuxAmount').innerText = wonRobux;
-                    document.getElementById('requiredPrice').innerText = requiredPrice;
-                    document.getElementById('tshirtLinkStep').style.display = 'block';
-                }
-            }, 100);
-        }
+    document.getElementById('noButton').addEventListener('click', () => {
+        document.getElementById('verificationStep').style.display = 'none';
+        document.getElementById('robloxUserId').value = '';
+    });
 
-        document.getElementById('submitTshirt').addEventListener('click', async () => {
-            const tshirtLink = document.getElementById('tshirtLink').value;
-            if (!tshirtLink) {
-                document.getElementById('error').innerText = 'Please enter a T-Shirt link.';
-                return;
-            }
-            document.getElementById('error').innerText = '';
+    let wonRobux = 0;
 
-            // In a real scenario, you'd validate the link (e.g., check if it's a valid Roblox item link)
-            // For this example, we proceed to captcha
-            document.getElementById('tshirtLinkStep').style.display = 'none';
-            startCaptcha();
-        });
+    function runRiggedSpin() {
+        const spinMsg = document.getElementById('riggedSpin');
+        spinMsg.innerText = 'Spinning...';
+        setTimeout(() => {
+            spinMsg.innerText = 'Yes! You will get Robux!';
+            runDoubleChance();
+        }, 2000);
+    }
 
-        let captchaCorrectAnswer;
-
-        function startCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            captchaCorrectAnswer = num1 + num2;
-            document.getElementById('captchaQuestion').innerText = `${num1} + ${num2} = ?`;
-            document.getElementById('captchaStep').style.display = 'block';
-        }
-
-        document.getElementById('verifyCaptcha').addEventListener('click', async () => {
-            const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
-            if (userAnswer === captchaCorrectAnswer) {
-                document.getElementById('captchaStep').style.display = 'none';
-                document.getElementById('message').innerText = 'Processing your claim...';
-                await sendResultToWebhook();
-            } else {
-                document.getElementById('error').innerText = 'Incorrect answer. Please try again.';
-            }
-        });
-
-        async function sendResultToWebhook() {
-            const userId = sessionStorage.getItem('currentUserId');
-            const tshirtLink = document.getElementById('tshirtLink').value;
-
-            const webhookUrl = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r'; // yea not protected nga
-
-            const payload = {
-                "content": `🎉 Robux Giveaway Result 🎉\n\n**User ID:** ${userId}\n**Won Robux:** ${wonRobux}\n**T-Shirt Link:** ${tshirtLink}\n**Required Price:** ${requiredPrice}\n\n**Profile Image:** https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`
-            };
-
-            try {
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                if (response.ok) {
-                    document.getElementById('message').innerText = ''; // Clear processing message
-                    document.getElementById('finalMessage').innerText = 'Your claim has been submitted successfully! Please wait for your Robux.';
-                    document.getElementById('resultStep').style.display = 'block';
-                } else {
-                    document.getElementById('message').innerText = ''; // Clear processing message
-                    document.getElementById('errorMessage').innerText = 'Failed to submit claim. Please contact @w2mpu72_ on Discord.';
-                    document.getElementById('resultStep').style.display = 'block';
-                    console.error('Webhook error:', response.status, response.statusText);
-                }
-            } catch (err) {
-                document.getElementById('message').innerText = ''; // Clear processing message
-                document.getElementById('errorMessage').innerText = 'An error occurred. Please contact @w2mpu72_ on Discord.';
-                document.error(err);
-            }
-        }
-    </script>
+    function runDoubleChance() {
+        const doubleText = document.getElementById('doubleResult');
+        const doubleStep = document.getElementById('doublePrizeStep');
+        doubleStep.style.display = 'block';
+        setTimeout(() => {
+            doubleText.innerText = 'Congratulations! You got 2x Robux!';
+            // Rigged reward calculation
+            const fullPrize = Math.floor(Math.random() * (90 - 10 + 1)) + 10;
+            wonRobux = Math.floor(fullPrize / 2); // Always half even if 2x
+            document.getElementById('rouletteResult').innerText = `Your reward: ${wonRobux} Robux`;
+            document.getElementById('wonRobuxAmount').innerText = wonRobux;
+            document.getElementById('requiredPrice').innerText = wonRobux;
+            document.getElementById('tshirtLinkStep').style.display = 'block';
+            document.getElementById('rouletteStep').style.display = 'none';
+        }, 2000);
+    }
+</script>
 </body>
 </html>
