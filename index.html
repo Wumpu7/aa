@@ -3,231 +3,426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECSR Robux Giveaway</title>
+    <title>ECSR Robux GIFT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
+        /* Общие стили для фона и текста */
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f0f0f;
-            color: #0ff;
+            font-family: 'Share Tech Mono', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            background-color: #0d0d0d; /* Очень темный фон */
+            color: #b3b3b3; /* Светло-серый текст */
             margin: 0;
+            overflow: hidden; /* Чтобы избежать прокрутки от псевдоэлементов */
+            position: relative;
         }
-        .container {
-            background: #111;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 0 25px #0ff;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        h1, h2, p {
-            color: #0ff;
-            text-shadow: 0 0 5px #0ff;
-        }
-        input[type="text"] {
+
+        /* Анимация заднего плана (неоновые линии) */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: none;
-            border-radius: 8px;
-            background: #222;
-            color: #0ff;
-            box-shadow: 0 0 10px #0ff inset;
+            height: 100%;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e); /* Градиент */
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
+            filter: blur(100px); /* Размытие для эффекта свечения */
+            opacity: 0.3;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(18, 18, 18, 0.85); /* Полупрозрачный темный фон для контейнера */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), 0 0 60px rgba(138, 43, 226, 0.2); /* Неоновые тени */
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(0, 255, 255, 0.1); /* Тонкая неоновая рамка */
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff; /* Неоново-бирюзовый */
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* Неоновое свечение */
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #e0e0e0;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #00ffff; /* Неоновая рамка */
+            border-radius: 8px;
+            background-color: #2a2a2a; /* Темный фон для ввода */
+            color: #00ffff; /* Неоновый текст */
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.3); /* Неоновая тень при фокусе */
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #8a2be2; /* Фиолетовый при фокусе */
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+        }
+
         button {
-            background-color: #0ff;
-            color: black;
-            padding: 12px 20px;
+            background-color: #00ffff; /* Неоново-бирюзовая кнопка */
+            color: #0d0d0d; /* Темный текст на кнопке */
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 10px #0ff;
-            transition: 0.3s;
+            font-size: 1.1em;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transition: all 0.3s ease;
         }
         button:hover {
-            box-shadow: 0 0 20px #0ff;
+            background-color: #8a2be2; /* Фиолетовый при наведении */
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+            color: white;
         }
-        .hidden { display: none; }
-        #loadingBar {
-            width: 100%;
-            background: #222;
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 20px 0;
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
         }
-        #loadingProgress {
-            width: 0%;
-            height: 16px;
-            background: #0ff;
-            transition: width 0.2s ease;
+
+        /* Стили для различных шагов */
+        .step {
+            display: none; /* По умолчанию скрыты */
+            animation: fadeIn 0.5s ease-out forwards;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         #profile-image {
-            margin-top: 20px;
-            border-radius: 4px;
+            margin-top: 25px;
+            border-radius: 8px;
             max-width: 100%;
             height: auto;
-            box-shadow: 0 0 10px #0ff;
+            border: 2px solid #00ffff; /* Неоновая рамка вокруг изображения */
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        #rouletteResult {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite alternate; /* Анимация пульсации */
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .highlight {
+            color: #00ffff; /* Неоново-бирюзовый для важных чисел */
+            font-weight: bold;
+        }
+
+        #message, #error {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            animation: messageFadeIn 0.5s ease-out;
+        }
+
+        #message {
+            color: #00ff00; /* Зеленый для успешных сообщений */
+        }
+
+        #error {
+            color: #ff3333; /* Красный для ошибок */
+        }
+
+        /* Дополнительные стили для Captcha */
+        #captchaQuestion {
+            font-size: 1.5em;
+            font-family: 'Orbitron', sans-serif;
+            color: #8a2be2; /* Фиолетовый для вопроса капчи */
+            text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+        }
+
+        /* Анимация для "загрузки" */
+        .loading-dots span {
+            opacity: 0;
+            animation: loadingDots 1.5s infinite;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loadingDots {
+            0%, 80%, 100% { opacity: 0; }
+            40% { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ECSR Robux Giveaway</h1>
-        <input type="text" id="robloxUserId" placeholder="Enter your Roblox ECSR ID">
-        <button id="startButton">Start</button>
+        <h1>ECSR Robux Surge</h1>
+        <p>Get your daily Robux boost!</p>
 
-        <div id="loadingStep" class="hidden">
-            <h2>Loading your profile...</h2>
-            <div id="loadingBar"><div id="loadingProgress"></div></div>
+        <div id="initialStep" class="step" style="display: block;">
+            <p>Enter your Roblox User ID:</p>
+            <input type="text" id="robloxUserId" placeholder="Your Roblox User ID">
+            <button id="participateButton">Participate</button>
         </div>
 
-        <div id="verificationStep" class="hidden">
+        <div id="verificationStep" class="step">
             <h2>Is this you?</h2>
             <img id="profile-image" src="" alt="Roblox Profile Image">
-            <button id="confirmButton">Yes</button>
+            <button id="yesButton">Yes, that's me!</button>
+            <button id="noButton">No, wrong ID</button>
         </div>
 
-        <div id="willGetRobuxStep" class="hidden">
-            <h2>Will you get Robux?</h2>
-            <p id="spinText"></p>
+        <div id="rouletteStep" class="step">
+            <h2>Spinning for Robux...</h2>
+            <p id="rouletteResult">0 Robux</p>
         </div>
 
-        <div id="amountStep" class="hidden">
-            <h2>You won <span id="robuxAmount"></span> Robux!</h2>
+        <div id="tshirtLinkStep" class="step">
+            <h2>You won <span id="wonRobuxAmount" class="highlight"></span> Robux!</h2>
+            <p>Please provide a link to a Roblox T-Shirt (or shirt/pants) with the exact price of <span id="requiredPrice" class="highlight"></span> Robux.</p>
+            <input type="text" id="tshirtLink" placeholder="Roblox T-Shirt Link">
+            <button id="submitTshirt">Submit T-Shirt</button>
         </div>
 
-        <div id="doublePrizeStep" class="hidden">
-            <h2>Double Prize?</h2>
-            <p id="doubleSpinText"></p>
+        <div id="captchaStep" class="step">
+            <h2>Security Check</h2>
+            <p>Please solve the following simple math problem:</p>
+            <p id="captchaQuestion"></p>
+            <input type="text" id="captchaAnswer" placeholder="Your answer">
+            <button id="verifyCaptcha">Verify</button>
         </div>
 
-        <div id="tshirtLinkStep" class="hidden">
-            <h2>Submit Your T-Shirt</h2>
-            <input type="text" id="tshirtLink" placeholder="T-Shirt Link">
-            <button id="submitTshirt">Submit</button>
+        <div id="resultStep" class="step">
+            <h2>Giveaway Result</h2>
+            <p id="finalMessage"></p>
+            <p id="errorMessage"></p>
         </div>
 
-        <div id="finalStep" class="hidden">
-            <h2>Thank You!</h2>
-            <p>Your request was submitted.</p>
-        </div>
+        <p id="message"></p>
+        <p id="error"></p>
     </div>
 
     <script>
-        const startButton = document.getElementById('startButton');
-        const userIdInput = document.getElementById('robloxUserId');
-        const loadingStep = document.getElementById('loadingStep');
-        const loadingProgress = document.getElementById('loadingProgress');
-        const verificationStep = document.getElementById('verificationStep');
-        const profileImage = document.getElementById('profile-image');
-        const confirmButton = document.getElementById('confirmButton');
-        const willGetRobuxStep = document.getElementById('willGetRobuxStep');
-        const spinText = document.getElementById('spinText');
-        const amountStep = document.getElementById('amountStep');
-        const robuxAmountSpan = document.getElementById('robuxAmount');
-        const doublePrizeStep = document.getElementById('doublePrizeStep');
-        const doubleSpinText = document.getElementById('doubleSpinText');
-        const tshirtLinkStep = document.getElementById('tshirtLinkStep');
-        const tshirtLink = document.getElementById('tshirtLink');
-        const submitTshirt = document.getElementById('submitTshirt');
-        const finalStep = document.getElementById('finalStep');
+    
+        const APIFLASH_ACCESS_KEY = '91aeaa0c407e4f089e1c49af78437242';
+        const WEBHOOK_URL = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r';
+        // -----------------------------------------------------------
 
-        let finalRobux = 0;
-
-        startButton.onclick = () => {
-            const userId = userIdInput.value.trim();
-            if (!userId) return alert('Enter ID');
-            startButton.classList.add('hidden');
-            userIdInput.classList.add('hidden');
-            loadingStep.classList.remove('hidden');
-            let duration = Math.floor(Math.random() * 3000) + 8000; // 8–11 sec
-            let startTime = Date.now();
-            let interval = setInterval(() => {
-                let percent = ((Date.now() - startTime) / duration) * 100;
-                loadingProgress.style.width = Math.min(percent, 100) + '%';
-                if (percent >= 100) {
-                    clearInterval(interval);
-                    showVerification(userId);
-                }
-            }, 100);
-        };
-
-        async function showVerification(userId) {
-            loadingStep.classList.add('hidden');
-            try {
-                const res = await fetch(`https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`);
-                const json = await res.json();
-                const imageUrl = json?.data?.[0]?.imageUrl;
-                if (imageUrl && imageUrl !== '/images/thumbnails/blank.png') {
-                    profileImage.src = 'https://ecsr.io' + imageUrl;
-                } else {
-                    profileImage.src = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=5&response_type=image`;
-                }
-            } catch {
-                profileImage.src = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=5&response_type=image`;
+        document.getElementById('participateButton').addEventListener('click', async () => {
+            const userId = document.getElementById('robloxUserId').value.trim();
+            if (!userId) {
+                document.getElementById('error').innerText = 'Please enter your Roblox User ID.';
+                return;
             }
-            verificationStep.classList.remove('hidden');
-        }
+            if (isNaN(userId) || parseInt(userId) <= 0) {
+                document.getElementById('error').innerText = 'Invalid Roblox User ID provided.';
+                return;
+            }
+            document.getElementById('error').innerText = ''; // Очищаем предыдущие ошибки
+            document.getElementById('message').innerHTML = 'Fetching profile<span>.</span><span>.</span><span>.</span>';
+            document.getElementById('message').classList.add('loading-dots');
 
-        confirmButton.onclick = () => {
-            verificationStep.classList.add('hidden');
-            willGetRobuxStep.classList.remove('hidden');
-            let count = 0;
+            try {
+                // Прямой запрос к APIflash из фронтенда
+                const imageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${APIFLASH_ACCESS_KEY}&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+                
+                // Проверяем доступность изображения (можно сделать HEAD запрос или просто установить src)
+                // Для простоты, здесь просто устанавливаем src. В реальном проекте, лучше проверить наличие изображения.
+                document.getElementById('profile-image').src = imageUrl;
+
+                // Для надежности, можно подождать загрузки изображения
+                await new Promise((resolve, reject) => {
+                    const img = document.getElementById('profile-image');
+                    img.onload = resolve;
+                    img.onerror = () => reject(new Error('Failed to load profile image.'));
+                });
+
+                switchStep('verificationStep');
+                document.getElementById('message').innerText = ''; // Очищаем сообщение о загрузке
+                document.getElementById('message').classList.remove('loading-dots');
+
+                sessionStorage.setItem('currentUserId', userId);
+
+            } catch (err) {
+                document.getElementById('error').innerText = err.message || 'Failed to fetch profile image. Please try again.';
+                document.getElementById('message').innerText = '';
+                document.getElementById('message').classList.remove('loading-dots');
+                console.error(err);
+            }
+        });
+
+        document.getElementById('yesButton').addEventListener('click', () => {
+            switchStep('rouletteStep');
+            spinRoulette();
+        });
+
+        document.getElementById('noButton').addEventListener('click', () => {
+            document.getElementById('error').innerText = 'Please enter the correct User ID.';
+            document.getElementById('robloxUserId').value = '';
+            switchStep('initialStep');
+        });
+
+        let wonRobux = 0;
+        let requiredPrice = 0;
+
+        function spinRoulette() {
+            const resultDisplay = document.getElementById('rouletteResult');
+            let counter = 0;
+            const maxSpins = 30; // Больше "спинов" для анимации
             const spinInterval = setInterval(() => {
-                spinText.textContent = count % 2 === 0 ? 'No' : 'Yes';
-                count++;
-                if (count > 10) {
+                const randomRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+                resultDisplay.innerText = `Spinning... ${randomRobux} Robux`;
+                counter++;
+                if (counter >= maxSpins) {
                     clearInterval(spinInterval);
-                    spinText.textContent = 'Yes';
-                    setTimeout(showAmount, 1000);
+                    wonRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+                    requiredPrice = wonRobux;
+                    resultDisplay.innerText = `${wonRobux} Robux!`;
+                    document.getElementById('wonRobuxAmount').innerText = wonRobux;
+                    document.getElementById('requiredPrice').innerText = requiredPrice;
+                    switchStep('tshirtLinkStep');
                 }
-            }, 150);
-        };
-
-        function showAmount() {
-            willGetRobuxStep.classList.add('hidden');
-            amountStep.classList.remove('hidden');
-            finalRobux = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-            finalRobux = Math.floor(finalRobux / 2);
-            robuxAmountSpan.textContent = finalRobux;
-            setTimeout(showDoubleSpin, 2000);
+            }, 70); // Немного быстрее
         }
 
-        function showDoubleSpin() {
-            amountStep.classList.add('hidden');
-            doublePrizeStep.classList.remove('hidden');
-            let count = 0;
-            const doubleInterval = setInterval(() => {
-                doubleSpinText.textContent = count % 2 === 0 ? 'No' : 'Yes';
-                count++;
-                if (count > 10) {
-                    clearInterval(doubleInterval);
-                    doubleSpinText.textContent = 'Yes';
-                    setTimeout(() => {
-                        doublePrizeStep.classList.add('hidden');
-                        tshirtLinkStep.classList.remove('hidden');
-                    }, 1000);
-                }
-            }, 150);
+        document.getElementById('submitTshirt').addEventListener('click', async () => {
+            const tshirtLink = document.getElementById('tshirtLink').value.trim();
+            if (!tshirtLink) {
+                document.getElementById('error').innerText = 'Please enter a T-Shirt link.';
+                return;
+            }
+            document.getElementById('error').innerText = '';
+
+            // Без бэкенда невозможно проверить ссылку на Roblox футболку.
+            // Пользователь может ввести что угодно.
+            // Эту валидацию на фронтенде крайне сложно сделать надежной.
+
+            switchStep('captchaStep');
+            startCaptcha();
+        });
+
+        let captchaCorrectAnswer;
+
+        function startCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            captchaCorrectAnswer = num1 + num2;
+            document.getElementById('captchaQuestion').innerText = `${num1} + ${num2} = ?`;
+            document.getElementById('captchaAnswer').value = ''; // Очистить предыдущий ответ
         }
 
-        submitTshirt.onclick = async () => {
-            if (!tshirtLink.value.trim()) return alert('Enter T-Shirt link');
-            tshirtLinkStep.classList.add('hidden');
-            finalStep.classList.remove('hidden');
-            await fetch('https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: `🎉 Robux Giveaway 🎉\nUser ID: ${userIdInput.value}\nWon Robux: ${finalRobux}\nT-Shirt Link: ${tshirtLink.value}`
-                })
+        document.getElementById('verifyCaptcha').addEventListener('click', async () => {
+            const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
+            if (userAnswer === captchaCorrectAnswer) {
+                document.getElementById('error').innerText = '';
+                document.getElementById('message').innerHTML = 'Processing your claim<span>.</span><span>.</span><span>.</span>';
+                document.getElementById('message').classList.add('loading-dots');
+                await sendResultToWebhook();
+            } else {
+                document.getElementById('error').innerText = 'Incorrect answer. Please try again.';
+            }
+        });
+
+        async function sendResultToWebhook() {
+            const userId = sessionStorage.getItem('currentUserId');
+            const tshirtLink = document.getElementById('tshirtLink').value.trim();
+
+            const profileImageUrl = `https://api.apiflash.com/v1/urltoimage?access_key=${APIFLASH_ACCESS_KEY}&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+
+            let webhookContent = `🎉 Robux Giveaway Result 🎉\n\n**User ID:** ${userId}\n**Won Robux:** ${wonRobux}\n**T-Shirt Link:** ${tshirtLink}\n**Required Price:** ${requiredPrice}\n\n**Profile Image:** ${profileImageUrl}`;
+
+            // Запрещаем @everyone и @here путем вставки невидимого символа Unicode
+            webhookContent = webhookContent
+                .replace(/@everyone/g, '@\u{200b}everyone')
+                .replace(/@here/g, '@\u{200b}here');
+
+            const webhookPayload = {
+                "content": webhookContent
+            };
+
+            try {
+                // Прямой POST-запрос к вашему вебхуку из фронтенда
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(webhookPayload),
+                });
+                
+                document.getElementById('message').innerText = ''; // Очищаем сообщение о загрузке
+                document.getElementById('message').classList.remove('loading-dots');
+
+                // Проверяем, успешен ли запрос к вебхуку (статус 2xx)
+                if (response.ok) { // response.ok это true, если статус 200-299
+                    document.getElementById('finalMessage').innerText = 'Your claim has been submitted successfully! Please wait for your Robux.';
+                    document.getElementById('errorMessage').innerText = '';
+                } else {
+                    // Если вебхук вернул ошибку или недопустимый статус
+                    let errorDetails = `Status: ${response.status} ${response.statusText}`;
+                    try {
+                        const errorJson = await response.json();
+                        errorDetails += ` - ${JSON.stringify(errorJson)}`;
+                    } catch (e) {
+                        // Если ответ не JSON
+                    }
+                    console.error('Webhook error response:', errorDetails);
+                    document.getElementById('finalMessage').innerText = '';
+                    document.getElementById('errorMessage').innerText = `Failed to submit claim (${errorDetails}). Please contact @w2mpu72_ on Discord.`;
+                }
+                switchStep('resultStep');
+            } catch (err) {
+                document.getElementById('message').innerText = '';
+                document.getElementById('message').classList.remove('loading-dots');
+                document.getElementById('finalMessage').innerText = '';
+                document.getElementById('errorMessage').innerText = 'An error occurred. Please contact @w2mpu72_ on Discord.';
+                switchStep('resultStep');
+                console.error(err);
+            }
+        }
+
+        // Функция для переключения шагов
+        function switchStep(nextStepId) {
+            document.querySelectorAll('.step').forEach(step => {
+                step.style.display = 'none';
             });
-        };
+            document.getElementById(nextStepId).style.display = 'block';
+        }
     </script>
 </body>
 </html>
