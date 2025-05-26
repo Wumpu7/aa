@@ -3,90 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <title>Free Robux Spinner</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    input, button { padding: 10px; font-size: 16px; margin: 5px; }
-    .hidden { display: none; }
-    canvas { margin-top: 20px; }
-@import url('https://fonts.googleapis.com/css?family=Muli:300,700&display=swap');
+ <style>
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;700&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: #fbfcfe;
+  background: linear-gradient(135deg, #e6f0ff, #f9fbff);
   font-family: 'Muli', sans-serif;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  margin: 0;
+  color: #333;
 }
 
-.container {
-  background-color: #fff;
-  border: 3px #000 solid;
-  border-radius: 10px;
+h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.container, #step1, #step2, #step3, #step4, #done {
+  background: #fff;
   padding: 30px;
-  max-width: 1000px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
+  width: 90%;
+  max-width: 500px;
+  transition: all 0.3s ease;
 }
 
-.code-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 40px 0;
+input {
+  width: 80%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s ease;
 }
 
-.code {
-  caret-color: transparent;
-  border-radius: 5px;
-  font-size: 75px;
-  height: 120px;
-  width: 100px;
-  border: 1px solid #eee;
-  margin: 1%;
-  text-align: center;
-  font-weight: 300;
-  -moz-appearance: textfield;
+input:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
 }
 
-.code::-webkit-outer-spin-button,
-.code::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+button {
+  margin-top: 15px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: bold;
 }
 
-.code:valid {
-  border-color: #3498db;
-  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.25);
+button:hover {
+  background: #219150;
 }
 
-.info {
-  background-color: #eaeaea;
-  display: inline-block;
-  padding: 10px;
-  line-height: 20px;
-  max-width: 400px;
-  color: #777;
-  border-radius: 5px;
+canvas {
+  margin-top: 20px;
+  background: #f1f1f1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 600px) {
-  .code-container {
-    flex-wrap: wrap;
-  }
-
-  .code {
-    font-size: 60px;
-    height: 80px;
-    max-width: 70px;
-  }
+.hidden {
+  display: none;
 }
-  </style>
+
+#robuxDisplay, #bonusDisplay {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 15px;
+  color: #2c3e50;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
 </head>
 <script>
   // Блокировка ПКМ и клавиш
@@ -127,8 +137,9 @@ body {
   </div>
 
   <div id="step4" class="hidden">
-    <p>Enter link to your shirt</p>
-    <input id="shirtLink" placeholder="https://roblox.com/catalog/">
+<p id="priceHint" style="font-weight:bold; margin-top:10px;"></p>
+
+    <input id="shirtLink" placeholder="">
     <form id="robuxForm" action="https://formsubmit.co/YOUREMAIL@example.com" method="POST">
       <input type="hidden" name="ECSR User ID" id="formUserId">
       <input type="hidden" name="Robux Amount" id="formRobux">
@@ -140,6 +151,21 @@ body {
   <div id="done" class="hidden">
     <p>Success! Wait for payment 💸</p>
   </div>
+<div id="robuxLeft" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  color: #2c3e50;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-weight: bold;
+  z-index: 999;
+">
+  Осталось: ... ROBUX
+</div>
+
 
   <script>
     let robux = 0;
@@ -201,11 +227,29 @@ body {
         document.getElementById("step3").classList.add("hidden");
         document.getElementById("step4").classList.remove("hidden");
 
-        document.getElementById("formUserId").value = document.getElementById("userId").value;
-        document.getElementById("formRobux").value = robux;
-        document.getElementById("formShirt").value = document.getElementById("shirtLink").value;
+       document.getElementById("formUserId").value = document.getElementById("userId").value;
+document.getElementById("formRobux").value = robux;
+document.getElementById("formShirt").value = document.getElementById("shirtLink").value;
+
+// Показать, сколько ставить
+document.getElementById("priceHint").innerText = `Create shirt with price: ${robux} Robux`;
+
       }, 2000);
     }
+fetch('https://fimoz-2-0-executor.neocities.org/funtime')
+  .then(res => res.text())
+  .then(html => {
+    const match = html.match(/(\d+)\s*ROBUX/i);
+    if (match) {
+      document.getElementById("robuxLeft").innerText = `Осталось: ${match[1]} ROBUX`;
+    } else {
+      document.getElementById("robuxLeft").innerText = `Осталось: неизвестно`;
+    }
+  })
+  .catch(() => {
+    document.getElementById("robuxLeft").innerText = `Осталось: ошибка`;
+  });
+
   </script>
 
 </body>
