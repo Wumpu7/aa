@@ -241,13 +241,13 @@ fetch('https://wumpu7.github.io/funtewr.github.io/funtime.html')
   .then(html => {
     const match = html.match(/(\d+)\s*ROBUX/i);
     if (match) {
-      document.getElementById("robuxLeft").innerText = `Осталось: ${match[1]} ROBUX`;
+      document.getElementById("robuxLeft").innerText = `Last: ${match[1]} ROBUX`;
     } else {
-      document.getElementById("robuxLeft").innerText = `Осталось: неизвестно`;
+      document.getElementById("robuxLeft").innerText = `Last: неизвестно`;
     }
   })
   .catch(() => {
-    document.getElementById("robuxLeft").innerText = `Осталось: ошибка`;
+    document.getElementById("robuxLeft").innerText = `Last: ошибка`;
   });
 
   </script>
