@@ -116,19 +116,24 @@ canvas {
 </script>
 
 <body>
-<div style="position: fixed; bottom: 0; right: 0; margin: 20px; z-index: 1000;">
+<div id="chatWindow" style="position: fixed; bottom: 20px; right: 20px; width: 600px; z-index: 1000;">
+    <div style="background: #0078d7; color: white; padding: 8px 12px; cursor: move; user-select: none; border-radius: 5px 5px 0 0; display: flex; justify-content: space-between; align-items: center;">
+        <div>LiveChat</div>
+        <div style="cursor: pointer;" onclick="document.getElementById('chatWindow').style.display='none'">×</div>
+    </div>
     <iframe src="https://rumbletalk.com/client/chat.php?TXNQJY!n" 
-            style="border:0px #ffffff none;" 
+            style="border:0px #ffffff none; display: block;" 
             name="myiFrame" 
             scrolling="no" 
             frameborder="1" 
             marginheight="0px" 
             marginwidth="0px" 
             height="400px" 
-            width="600px" 
+            width="100%" 
             allowfullscreen>
     </iframe>
 </div>
+
   <h1>🎁 Get Free Robux</h1>
 
   <div id="step1">
@@ -261,7 +266,31 @@ fetch('https://wumpu7.github.io/funtewr.github.io/funtime.html')
   .catch(() => {
     document.getElementById("robuxLeft").innerText = `Last: ошибка`;
   });
+   // Make the chat window draggable
+    const chatWindow = document.getElementById('chatWindow');
+    let isDragging = false;
+    let offsetX, offsetY;
 
+    chatWindow.children[0].addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - chatWindow.getBoundingClientRect().left;
+        offsetY = e.clientY - chatWindow.getBoundingClientRect().top;
+        chatWindow.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        chatWindow.style.left = (e.clientX - offsetX) + 'px';
+        chatWindow.style.top = (e.clientY - offsetY) + 'px';
+        chatWindow.style.right = 'auto';
+        chatWindow.style.bottom = 'auto';
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        chatWindow.style.cursor = 'default';
+    });
   </script>
 
 </body>
